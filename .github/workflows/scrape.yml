@@ -24,7 +24,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
 
       - name: Install system dependencies for Puppeteer
         run: |
@@ -37,7 +36,7 @@ jobs:
             libxext6 fonts-liberation wget
 
       - name: Install Node dependencies
-        run: npm ci
+        run: npm install
 
       - name: Run scraper
         run: npm run scrape
