@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bazaar Live — BD Grocery Price Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f0f0f;
+      --bg-card:   #181818;
+      --bg-hover:  #202020;
+      --border:    #2a2a2a;
+      --border-hi: #3a3a3a;
+      --text:      #f0ede8;
+      --muted:     #888;
+      --dim:       #555;
+
+      --shwapno:    #378ADD;
+      --meena:      #1D9E75;
+      --unimart:    #BA7517;
+      --chaldal:    #D4537E;
+
+      --shwapno-bg: rgba(55,138,221,.12);
+      --meena-bg:   rgba(29,158,117,.12);
+      --unimart-bg: rgba(186,117,23,.12);
+      --chaldal-bg: rgba(212,83,126,.12);
+
+      --radius:   10px;
+      --radius-sm: 6px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Layout ────────────────────────────────── */
+    .page { max-width: 1100px; margin: 0 auto; padding: 0 20px 60px; }
+
+    /* ── Header ────────────────────────────────── */
+    header {
+      padding: 40px 0 32px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .header-left h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+    .header-left p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+    .last-updated {
+      font-size: 12px;
+      color: var(--dim);
+    }
+    .status-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--meena);
+      margin-right: 5px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── Shop legend pills ─────────────────────── */
+    .shop-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .shop-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border-hi);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .2s;
+      background: transparent;
+    }
+    .shop-pill.active, .shop-pill:hover {
+      border-color: transparent;
+      color: #fff;
+    }
+    .shop-pill[data-shop="Shwapno"].active   { background: var(--shwapno-bg); color: var(--shwapno); border-color: var(--shwapno); }
+    .shop-pill[data-shop="Meena Bazar"].active { background: var(--meena-bg); color: var(--meena); border-color: var(--meena); }
+    .shop-pill[data-shop="Unimart"].active   { background: var(--unimart-bg); color: var(--unimart); border-color: var(--unimart); }
+    .shop-pill[data-shop="Chaldal"].active   { background: var(--chaldal-bg); color: var(--chaldal); border-color: var(--chaldal); }
+    .swatch { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ── Metric cards ──────────────────────────── */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .mc {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+    .mc-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+    .mc-value { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); }
+    .mc-sub   { font-size: 11px; color: var(--dim); margin-top: 3px; }
+
+    /* ── Controls ──────────────────────────────── */
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .controls label { font-size: 12px; color: var(--muted); margin-right: 4px; }
+    .cat-btn {
+      padding: 5px 13px;
+      border-radius: 20px;
+      border: 1px solid var(--border-hi);
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .cat-btn:hover  { background: var(--bg-hover); color: var(--text); }
+    .cat-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 500; }
+
+    .search-wrap { margin-left: auto; position: relative; }
+    .search-wrap input {
+      background: var(--bg-card);
+      border: 1px solid var(--border-hi);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      padding: 6px 12px 6px 32px;
+      width: 200px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .search-wrap input::placeholder { color: var(--dim); }
+    .search-wrap input:focus { border-color: var(--border-hi); }
+    .search-wrap svg {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      pointer-events: none; opacity: .4;
+    }
+
+    /* ── Table ─────────────────────────────────── */
+    .table-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 12px 14px;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      text-align: right;
+      background: #141414;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .12s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--bg-hover); }
+    tbody td {
+      padding: 13px 14px;
+      text-align: right;
+      font-size: 13px;
+      color: var(--text);
+      vertical-align: middle;
+    }
+    tbody td:first-child { text-align: left; }
+
+    .product-name { font-weight: 500; font-size: 13px; }
+    .product-cat  { font-size: 11px; color: var(--dim); margin-top: 1px; }
+    .unit-col     { color: var(--dim); font-size: 12px; white-space: nowrap; }
+
+    .price-cell { position: relative; }
+    .price-amt  { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; }
+    .price-bar  {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 2px;
+      border-radius: 1px;
+      transition: width .3s ease;
+    }
+    .price-stale { opacity: .4; font-style: italic; }
+
+    .best-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .save-note {
+      display: block;
+      font-size: 10px;
+      color: var(--dim);
+      margin-top: 2px;
+      font-weight: 400;
+    }
+
+    /* ── Basket CTA ────────────────────────────── */
+    .basket-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #181818cc;
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      transform: translateY(100%);
+      transition: transform .25s ease;
+      z-index: 100;
+    }
+    .basket-bar.visible { transform: translateY(0); }
+    .basket-label { font-size: 13px; color: var(--muted); }
+    .basket-totals {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .basket-shop {
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .basket-clear {
+      margin-left: auto;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-hi);
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .basket-clear:hover { background: var(--bg-hover); color: var(--text); }
+
+    /* ── Row checkbox ──────────────────────────── */
+    .row-check {
+      width: 16px; height: 16px;
+      accent-color: var(--meena);
+      cursor: pointer;
+    }
+
+    /* ── Chart section ─────────────────────────── */
+    .chart-section {
+      margin-top: 28px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .chart-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .avg-bars { display: flex; flex-direction: column; gap: 12px; }
+    .avg-row  { display: flex; align-items: center; gap: 12px; }
+    .avg-shop { font-size: 12px; color: var(--muted); width: 100px; text-align: right; flex-shrink: 0; }
+    .avg-track {
+      flex: 1;
+      background: #222;
+      border-radius: 4px;
+      height: 26px;
+      overflow: hidden;
+    }
+    .avg-fill {
+      height: 100%;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      transition: width .5s cubic-bezier(.4,0,.2,1);
+      min-width: 40px;
+    }
+    .avg-val { font-size: 12px; color: var(--muted); width: 60px; flex-shrink: 0; }
+
+    /* ── Empty state ───────────────────────────── */
+    .empty {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--dim);
+      font-size: 13px;
+    }
+
+    /* ── Loading overlay ───────────────────────── */
+    #loader {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      z-index: 999;
+      transition: opacity .4s;
+    }
+    #loader.hidden { opacity: 0; pointer-events: none; }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 2px solid var(--border);
+      border-top-color: var(--meena);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loader p { font-size: 13px; color: var(--muted); }
+
+    @media (max-width: 700px) {
+      thead th:nth-child(2),
+      tbody td:nth-child(2) { display: none; }
+      .search-wrap input { width: 140px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="spinner"></div>
+  <p>Loading prices…</p>
+</div>
+
+<div class="page">
+  <header>
+    <div class="header-left">
+      <h1>🛒 Bazaar Live</h1>
+      <p>Daily food product price comparison across major Bangladesh supershops</p>
+    </div>
+    <div class="header-right">
+      <span class="last-updated" id="last-updated">—</span>
+      <span style="font-size:11px;color:var(--dim)"><span class="status-dot"></span>auto-updated daily</span>
+    </div>
+  </header>
+
+  <!-- Shop filter pills -->
+  <div class="shop-pills" id="shop-pills">
+    <button class="shop-pill active" data-shop="all">
+      <span class="swatch" style="background:#888"></span>All shops
+    </button>
+    <button class="shop-pill" data-shop="Shwapno">
+      <span class="swatch" style="background:var(--shwapno)"></span>Shwapno
+    </button>
+    <button class="shop-pill" data-shop="Meena Bazar">
+      <span class="swatch" style="background:var(--meena)"></span>Meena Bazar
+    </button>
+    <button class="shop-pill" data-shop="Unimart">
+      <span class="swatch" style="background:var(--unimart)"></span>Unimart
+    </button>
+    <button class="shop-pill" data-shop="Chaldal">
+      <span class="swatch" style="background:var(--chaldal)"></span>Chaldal
+    </button>
+  </div>
+
+  <!-- Summary metrics -->
+  <div class="metrics" id="metrics">
+    <div class="mc"><div class="mc-label">Products tracked</div><div class="mc-value" id="m-count">—</div><div class="mc-sub">across 4 shops</div></div>
+    <div class="mc"><div class="mc-label">Cheapest overall</div><div class="mc-value" id="m-cheapest">—</div><div class="mc-sub" id="m-cheapest-sub">most items cheapest</div></div>
+    <div class="mc"><div class="mc-label">Biggest saving</div><div class="mc-value" id="m-saving">—</div><div class="mc-sub" id="m-saving-sub">vs priciest shop</div></div>
+    <div class="mc"><div class="mc-label">Price spread today</div><div class="mc-value" id="m-spread">—</div><div class="mc-sub">avg difference</div></div>
+  </div>
+
+  <!-- Category + search controls -->
+  <div class="controls" id="controls">
+    <div id="cat-buttons"></div>
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="search" placeholder="Search products…" />
+    </div>
+  </div>
+
+  <!-- Main table -->
+  <div class="table-wrap">
+    <table id="main-table">
+      <thead>
+        <tr id="thead-row"></tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- Average index chart -->
+  <div class="chart-section">
+    <div class="chart-title">Average price index by shop</div>
+    <div class="avg-bars" id="avg-bars"></div>
+  </div>
+</div>
+
+<!-- Basket totals bar -->
+<div class="basket-bar" id="basket-bar">
+  <span class="basket-label">🧺 Selected items total:</span>
+  <div class="basket-totals" id="basket-totals"></div>
+  <button class="basket-clear" id="basket-clear">Clear selection</button>
+</div>
+
+<script>
+const SHOPS = ['Shwapno','Meena Bazar','Unimart','Chaldal'];
+const COLORS = { Shwapno:'#378ADD','Meena Bazar':'#1D9E75',Unimart:'#BA7517',Chaldal:'#D4537E' };
+const SHOP_BG = { Shwapno:'rgba(55,138,221,.15)','Meena Bazar':'rgba(29,158,117,.15)',Unimart:'rgba(186,117,23,.15)',Chaldal:'rgba(212,83,126,.15)' };
+
+let allProducts = [];
+let activeCategory = 'All';
+let activeShop = 'all';
+let searchTerm = '';
+let selected = new Set();
+
+// ── Load data ───────────────────────────────────────────────────────────────
+async function loadData() {
+  const res = await fetch('data/prices.json?_=' + Date.now());
+  if (!res.ok) throw new Error('Failed to load prices.json');
+  return res.json();
+}
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+function fmtPrice(p) { return p != null ? '৳' + p.toLocaleString() : '—'; }
+function shopColor(s) { return COLORS[s] || '#888'; }
+
+function cheapestShop(product, shopFilter) {
+  const shops = shopFilter === 'all' ? SHOPS : [shopFilter];
+  let min = Infinity, best = null;
+  shops.forEach(s => {
+    const e = product.prices[s];
+    if (e && e.price && e.price < min) { min = e.price; best = s; }
+  });
+  return { shop: best, price: min === Infinity ? null : min };
+}
+
+function visibleShops() {
+  return activeShop === 'all' ? SHOPS : [activeShop];
+}
+
+function filteredProducts() {
+  return allProducts.filter(p => {
+    const catOk = activeCategory === 'All' || p.category === activeCategory;
+    const termOk = !searchTerm || p.name.toLowerCase().includes(searchTerm.toLowerCase());
+    return catOk && termOk;
+  });
+}
+
+// ── Metrics ─────────────────────────────────────────────────────────────────
+function renderMetrics() {
+  const prods = filteredProducts();
+  document.getElementById('m-count').textContent = prods.length;
+
+  const cheapCounts = {};
+  SHOPS.forEach(s => cheapCounts[s] = 0);
+  prods.forEach(p => {
+    const { shop } = cheapestShop(p, 'all');
+    if (shop) cheapCounts[shop]++;
+  });
+  const [topShop] = Object.entries(cheapCounts).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('m-cheapest').textContent = topShop ? topShop[0] : '—';
+  document.getElementById('m-cheapest-sub').textContent = topShop ? `cheapest in ${topShop[1]} items` : '';
+
+  let maxSaving = 0, maxItem = '';
+  prods.forEach(p => {
+    const prices = SHOPS.map(s => p.prices[s]?.price).filter(Boolean);
+    if (prices.length < 2) return;
+    const diff = Math.max(...prices) - Math.min(...prices);
+    if (diff > maxSaving) { maxSaving = diff; maxItem = p.name; }
+  });
+  document.getElementById('m-saving').textContent = maxSaving ? '৳' + maxSaving : '—';
+  document.getElementById('m-saving-sub').textContent = maxItem || '';
+
+  const spreads = prods.map(p => {
+    const prices = SHOPS.map(s => p.prices[s]?.price).filter(Boolean);
+    if (prices.length < 2) return 0;
+    return Math.max(...prices) - Math.min(...prices);
+  }).filter(Boolean);
+  const avgSpread = spreads.length ? Math.round(spreads.reduce((a,b)=>a+b,0)/spreads.length) : 0;
+  document.getElementById('m-spread').textContent = avgSpread ? '৳' + avgSpread : '—';
+}
+
+// ── Table header ─────────────────────────────────────────────────────────────
+function renderHeader() {
+  const shops = visibleShops();
+  const tr = document.getElementById('thead-row');
+  tr.innerHTML = `
+    <th style="width:32px"></th>
+    <th>Product</th>
+    <th>Unit</th>
+    ${shops.map(s => `<th style="color:${shopColor(s)}">${s}</th>`).join('')}
+    <th>Best deal</th>
+  `;
+}
+
+// ── Table body ────────────────────────────────────────────────────────────────
+function renderTable() {
+  const shops = visibleShops();
+  const prods = filteredProducts();
+  const tbody = document.getElementById('tbody');
+
+  if (!prods.length) {
+    tbody.innerHTML = `<tr><td colspan="${4 + shops.length}" class="empty">No products found</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = prods.map(p => {
+    const shopPrices = shops.map(s => p.prices[s]?.price).filter(Boolean);
+    const minPrice = shopPrices.length ? Math.min(...shopPrices) : null;
+    const maxPrice = shopPrices.length ? Math.max(...shopPrices) : null;
+    const range = (maxPrice - minPrice) || 1;
+    const { shop: best } = cheapestShop(p, activeShop);
+    const saving = maxPrice && minPrice ? maxPrice - minPrice : 0;
+    const isSelected = selected.has(p.id);
+
+    const priceCells = shops.map(s => {
+      const entry = p.prices[s];
+      const pr = entry?.price;
+      const stale = entry?.stale;
+      const isMin = pr === minPrice && pr != null;
+      const barPct = pr && minPrice != null ? Math.round(((pr - minPrice) / range) * 80) : 0;
+
+      return `<td class="price-cell" style="padding-bottom:16px;">
+        <span class="price-amt ${stale ? 'price-stale' : ''}" style="${isMin ? 'color:'+shopColor(s) : ''}">
+          ${pr != null ? '৳' + pr.toLocaleString() : '<span style="color:var(--dim)">N/A</span>'}
+        </span>
+        ${stale ? '<span style="font-size:10px;color:var(--dim);display:block">stale</span>' : ''}
+        <div class="price-bar" style="width:${barPct}%;background:${shopColor(s)};opacity:.3;"></div>
+      </td>`;
+    }).join('');
+
+    const bestBadge = best
+      ? `<span class="best-badge" style="background:${SHOP_BG[best]};color:${shopColor(best)}">${best}</span>${saving > 0 ? `<span class="save-note">save ৳${saving}</span>` : ''}`
+      : '—';
+
+    return `<tr data-id="${p.id}">
+      <td><input type="checkbox" class="row-check" data-id="${p.id}" ${isSelected ? 'checked' : ''} /></td>
+      <td><div class="product-name">${p.name}</div><div class="product-cat">${p.category}</div></td>
+      <td class="unit-col">${p.unit}</td>
+      ${priceCells}
+      <td>${bestBadge}</td>
+    </tr>`;
+  }).join('');
+
+  // Checkbox listeners
+  tbody.querySelectorAll('.row-check').forEach(cb => {
+    cb.addEventListener('change', e => {
+      const id = e.target.dataset.id;
+      e.target.checked ? selected.add(id) : selected.delete(id);
+      renderBasket();
+    });
+  });
+}
+
+// ── Avg chart ────────────────────────────────────────────────────────────────
+function renderChart() {
+  const prods = filteredProducts();
+  const avgByShop = {};
+  SHOPS.forEach(s => {
+    const vals = prods.map(p => p.prices[s]?.price).filter(Boolean);
+    avgByShop[s] = vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length) : 0;
+  });
+  const maxAvg = Math.max(...Object.values(avgByShop));
+
+  document.getElementById('avg-bars').innerHTML = SHOPS.map(s => {
+    const avg = avgByShop[s];
+    const pct = maxAvg ? Math.round((avg/maxAvg)*96) : 0;
+    return `<div class="avg-row">
+      <div class="avg-shop">${s}</div>
+      <div class="avg-track">
+        <div class="avg-fill" style="width:${pct}%;background:${shopColor(s)};color:#fff;">
+          ${pct > 25 ? '৳'+avg : ''}
+        </div>
+      </div>
+      <div class="avg-val">${pct <= 25 ? '৳'+avg : ''}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Basket ───────────────────────────────────────────────────────────────────
+function renderBasket() {
+  const bar = document.getElementById('basket-bar');
+  if (!selected.size) { bar.classList.remove('visible'); return; }
+  bar.classList.add('visible');
+
+  const selProds = allProducts.filter(p => selected.has(p.id));
+  const totals = {};
+  SHOPS.forEach(s => {
+    totals[s] = selProds.reduce((sum, p) => sum + (p.prices[s]?.price || 0), 0);
+  });
+  const minTotal = Math.min(...Object.values(totals));
+
+  document.getElementById('basket-totals').innerHTML = SHOPS.map(s => {
+    const isMin = totals[s] === minTotal;
+    return `<span class="basket-shop" style="color:${isMin ? shopColor(s) : 'var(--muted)'}">
+      ${s}: ৳${totals[s].toLocaleString()}${isMin ? ' ✓' : ''}
+    </span>`;
+  }).join('');
+}
+
+// ── Category buttons ─────────────────────────────────────────────────────────
+function renderCatButtons() {
+  const cats = ['All', ...new Set(allProducts.map(p => p.category))];
+  document.getElementById('cat-buttons').innerHTML = cats.map(c =>
+    `<button class="cat-btn ${c === activeCategory ? 'active' : ''}" data-cat="${c}">${c}</button>`
+  ).join('');
+
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeCategory = btn.dataset.cat;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === activeCategory));
+      renderAll();
+    });
+  });
+}
+
+// ── Full render ───────────────────────────────────────────────────────────────
+function renderAll() {
+  renderMetrics();
+  renderHeader();
+  renderTable();
+  renderChart();
+  renderBasket();
+}
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+(async () => {
+  try {
+    const data = await loadData();
+    allProducts = data.products || [];
+
+    const dt = new Date(data.last_updated);
+    document.getElementById('last-updated').textContent =
+      'Updated ' + dt.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) +
+      ' at ' + dt.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+
+    renderCatButtons();
+    renderAll();
+
+    // Shop filter
+    document.getElementById('shop-pills').addEventListener('click', e => {
+      const btn = e.target.closest('.shop-pill');
+      if (!btn) return;
+      activeShop = btn.dataset.shop;
+      document.querySelectorAll('.shop-pill').forEach(b => b.classList.toggle('active', b.dataset.shop === activeShop));
+      renderAll();
+    });
+
+    // Search
+    document.getElementById('search').addEventListener('input', e => {
+      searchTerm = e.target.value;
+      renderTable();
+      renderMetrics();
+    });
+
+    // Basket clear
+    document.getElementById('basket-clear').addEventListener('click', () => {
+      selected.clear();
+      document.querySelectorAll('.row-check').forEach(cb => cb.checked = false);
+      renderBasket();
+    });
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById('loader').innerHTML =
+      `<p style="color:#D4537E">Failed to load price data.<br/>${err.message}</p>`;
+    return;
+  }
+
+  document.getElementById('loader').classList.add('hidden');
+})();
+</script>
+</body>
+</html>

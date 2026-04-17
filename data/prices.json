@@ -1,0 +1,222 @@
+{
+  "last_updated": "2025-04-17T06:00:00.000Z",
+  "source_note": "Prices in BDT. Auto-updated daily via GitHub Actions.",
+  "products": [
+    {
+      "id": "miniket-rice",
+      "name": "Miniket Rice",
+      "unit": "1 kg",
+      "category": "Grains",
+      "prices": {
+        "Shwapno": { "price": 68, "url": "https://www.shwapno.com/miniket-rice-1kg", "available": true },
+        "Meena Bazar": { "price": 65, "url": "https://www.meenabazar.com.bd/miniket-rice", "available": true },
+        "Unimart": { "price": 70, "url": "https://unimart.com.bd/miniket-rice", "available": true },
+        "Chaldal": { "price": 67, "url": "https://chaldal.com/miniket-rice-1kg", "available": true }
+      }
+    },
+    {
+      "id": "nazirshail-rice",
+      "name": "Nazirshail Rice",
+      "unit": "1 kg",
+      "category": "Grains",
+      "prices": {
+        "Shwapno": { "price": 75, "url": "https://www.shwapno.com/nazirshail-rice", "available": true },
+        "Meena Bazar": { "price": 72, "url": "https://www.meenabazar.com.bd/nazirshail-rice", "available": true },
+        "Unimart": { "price": 78, "url": "https://unimart.com.bd/nazirshail-rice", "available": true },
+        "Chaldal": { "price": 74, "url": "https://chaldal.com/nazirshail-rice", "available": true }
+      }
+    },
+    {
+      "id": "masur-dal",
+      "name": "Lentil (Masur Dal)",
+      "unit": "1 kg",
+      "category": "Pulses",
+      "prices": {
+        "Shwapno": { "price": 110, "url": "https://www.shwapno.com/masur-dal-1kg", "available": true },
+        "Meena Bazar": { "price": 108, "url": "https://www.meenabazar.com.bd/masur-dal", "available": true },
+        "Unimart": { "price": 115, "url": "https://unimart.com.bd/masur-dal", "available": true },
+        "Chaldal": { "price": 112, "url": "https://chaldal.com/masur-dal-1kg", "available": true }
+      }
+    },
+    {
+      "id": "soybean-oil",
+      "name": "Soybean Oil",
+      "unit": "1 L",
+      "category": "Oils",
+      "prices": {
+        "Shwapno": { "price": 155, "url": "https://www.shwapno.com/soybean-oil-1l", "available": true },
+        "Meena Bazar": { "price": 152, "url": "https://www.meenabazar.com.bd/soybean-oil", "available": true },
+        "Unimart": { "price": 158, "url": "https://unimart.com.bd/soybean-oil", "available": true },
+        "Chaldal": { "price": 150, "url": "https://chaldal.com/soybean-oil-1l", "available": true }
+      }
+    },
+    {
+      "id": "mustard-oil",
+      "name": "Mustard Oil",
+      "unit": "1 L",
+      "category": "Oils",
+      "prices": {
+        "Shwapno": { "price": 180, "url": "https://www.shwapno.com/mustard-oil-1l", "available": true },
+        "Meena Bazar": { "price": 175, "url": "https://www.meenabazar.com.bd/mustard-oil", "available": true },
+        "Unimart": { "price": 185, "url": "https://unimart.com.bd/mustard-oil", "available": true },
+        "Chaldal": { "price": 178, "url": "https://chaldal.com/mustard-oil-1l", "available": true }
+      }
+    },
+    {
+      "id": "broiler-chicken",
+      "name": "Chicken (Broiler)",
+      "unit": "1 kg",
+      "category": "Meat & Fish",
+      "prices": {
+        "Shwapno": { "price": 185, "url": "https://www.shwapno.com/broiler-chicken", "available": true },
+        "Meena Bazar": { "price": 180, "url": "https://www.meenabazar.com.bd/broiler-chicken", "available": true },
+        "Unimart": { "price": 195, "url": "https://unimart.com.bd/broiler-chicken", "available": true },
+        "Chaldal": { "price": 188, "url": "https://chaldal.com/broiler-chicken", "available": true }
+      }
+    },
+    {
+      "id": "beef",
+      "name": "Beef (Bone-in)",
+      "unit": "1 kg",
+      "category": "Meat & Fish",
+      "prices": {
+        "Shwapno": { "price": 720, "url": "https://www.shwapno.com/beef-bone-in", "available": true },
+        "Meena Bazar": { "price": 700, "url": "https://www.meenabazar.com.bd/beef", "available": true },
+        "Unimart": { "price": 740, "url": "https://unimart.com.bd/beef", "available": true },
+        "Chaldal": { "price": 710, "url": "https://chaldal.com/beef-bone-in", "available": true }
+      }
+    },
+    {
+      "id": "rui-fish",
+      "name": "Rui Fish",
+      "unit": "1 kg",
+      "category": "Meat & Fish",
+      "prices": {
+        "Shwapno": { "price": 250, "url": "https://www.shwapno.com/rui-fish", "available": true },
+        "Meena Bazar": { "price": 245, "url": "https://www.meenabazar.com.bd/rui-fish", "available": true },
+        "Unimart": { "price": 260, "url": "https://unimart.com.bd/rui-fish", "available": true },
+        "Chaldal": { "price": 255, "url": "https://chaldal.com/rui-fish", "available": true }
+      }
+    },
+    {
+      "id": "egg-deshi",
+      "name": "Egg (Deshi)",
+      "unit": "1 dozen",
+      "category": "Dairy & Eggs",
+      "prices": {
+        "Shwapno": { "price": 145, "url": "https://www.shwapno.com/deshi-egg-dozen", "available": true },
+        "Meena Bazar": { "price": 140, "url": "https://www.meenabazar.com.bd/deshi-egg", "available": true },
+        "Unimart": { "price": 150, "url": "https://unimart.com.bd/deshi-egg", "available": true },
+        "Chaldal": { "price": 142, "url": "https://chaldal.com/deshi-egg-12pcs", "available": true }
+      }
+    },
+    {
+      "id": "pasteurized-milk",
+      "name": "Milk (Pasteurized)",
+      "unit": "1 L",
+      "category": "Dairy & Eggs",
+      "prices": {
+        "Shwapno": { "price": 78, "url": "https://www.shwapno.com/pasteurized-milk-1l", "available": true },
+        "Meena Bazar": { "price": 75, "url": "https://www.meenabazar.com.bd/pasteurized-milk", "available": true },
+        "Unimart": { "price": 80, "url": "https://unimart.com.bd/pasteurized-milk", "available": true },
+        "Chaldal": { "price": 77, "url": "https://chaldal.com/pasteurized-milk-1l", "available": true }
+      }
+    },
+    {
+      "id": "potato",
+      "name": "Potato",
+      "unit": "1 kg",
+      "category": "Vegetables",
+      "prices": {
+        "Shwapno": { "price": 42, "url": "https://www.shwapno.com/potato-1kg", "available": true },
+        "Meena Bazar": { "price": 40, "url": "https://www.meenabazar.com.bd/potato", "available": true },
+        "Unimart": { "price": 45, "url": "https://unimart.com.bd/potato", "available": true },
+        "Chaldal": { "price": 43, "url": "https://chaldal.com/potato-1kg", "available": true }
+      }
+    },
+    {
+      "id": "onion",
+      "name": "Onion",
+      "unit": "1 kg",
+      "category": "Vegetables",
+      "prices": {
+        "Shwapno": { "price": 65, "url": "https://www.shwapno.com/onion-1kg", "available": true },
+        "Meena Bazar": { "price": 62, "url": "https://www.meenabazar.com.bd/onion", "available": true },
+        "Unimart": { "price": 68, "url": "https://unimart.com.bd/onion", "available": true },
+        "Chaldal": { "price": 64, "url": "https://chaldal.com/onion-1kg", "available": true }
+      }
+    },
+    {
+      "id": "tomato",
+      "name": "Tomato",
+      "unit": "1 kg",
+      "category": "Vegetables",
+      "prices": {
+        "Shwapno": { "price": 55, "url": "https://www.shwapno.com/tomato-1kg", "available": true },
+        "Meena Bazar": { "price": 52, "url": "https://www.meenabazar.com.bd/tomato", "available": true },
+        "Unimart": { "price": 58, "url": "https://unimart.com.bd/tomato", "available": true },
+        "Chaldal": { "price": 54, "url": "https://chaldal.com/tomato-1kg", "available": true }
+      }
+    },
+    {
+      "id": "garlic",
+      "name": "Garlic",
+      "unit": "1 kg",
+      "category": "Spices",
+      "prices": {
+        "Shwapno": { "price": 240, "url": "https://www.shwapno.com/garlic-1kg", "available": true },
+        "Meena Bazar": { "price": 230, "url": "https://www.meenabazar.com.bd/garlic", "available": true },
+        "Unimart": { "price": 250, "url": "https://unimart.com.bd/garlic", "available": true },
+        "Chaldal": { "price": 235, "url": "https://chaldal.com/garlic-1kg", "available": true }
+      }
+    },
+    {
+      "id": "sugar",
+      "name": "Sugar",
+      "unit": "1 kg",
+      "category": "Grains",
+      "prices": {
+        "Shwapno": { "price": 130, "url": "https://www.shwapno.com/sugar-1kg", "available": true },
+        "Meena Bazar": { "price": 128, "url": "https://www.meenabazar.com.bd/sugar", "available": true },
+        "Unimart": { "price": 135, "url": "https://unimart.com.bd/sugar", "available": true },
+        "Chaldal": { "price": 132, "url": "https://chaldal.com/sugar-1kg", "available": true }
+      }
+    },
+    {
+      "id": "atta",
+      "name": "Atta (Wheat Flour)",
+      "unit": "1 kg",
+      "category": "Grains",
+      "prices": {
+        "Shwapno": { "price": 52, "url": "https://www.shwapno.com/atta-1kg", "available": true },
+        "Meena Bazar": { "price": 50, "url": "https://www.meenabazar.com.bd/atta", "available": true },
+        "Unimart": { "price": 55, "url": "https://unimart.com.bd/atta", "available": true },
+        "Chaldal": { "price": 53, "url": "https://chaldal.com/atta-1kg", "available": true }
+      }
+    },
+    {
+      "id": "banana",
+      "name": "Banana (Sagar)",
+      "unit": "1 dozen",
+      "category": "Fruits",
+      "prices": {
+        "Shwapno": { "price": 55, "url": "https://www.shwapno.com/banana-dozen", "available": true },
+        "Meena Bazar": { "price": 50, "url": "https://www.meenabazar.com.bd/banana", "available": true },
+        "Unimart": { "price": 60, "url": "https://unimart.com.bd/banana", "available": true },
+        "Chaldal": { "price": 52, "url": "https://chaldal.com/sagar-banana", "available": true }
+      }
+    },
+    {
+      "id": "green-chilli",
+      "name": "Green Chilli",
+      "unit": "250 g",
+      "category": "Vegetables",
+      "prices": {
+        "Shwapno": { "price": 38, "url": "https://www.shwapno.com/green-chilli-250g", "available": true },
+        "Meena Bazar": { "price": 35, "url": "https://www.meenabazar.com.bd/green-chilli", "available": true },
+        "Unimart": { "price": 40, "url": "https://unimart.com.bd/green-chilli", "available": true },
+        "Chaldal": { "price": 37, "url": "https://chaldal.com/green-chilli-250g", "available": true }
+      }
+    }
+  ]
+}
